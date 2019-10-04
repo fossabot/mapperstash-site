@@ -1,14 +1,16 @@
 		<main>
-			<div id="homeMain">
-				<div id="preamble">
-					<p><strong>MapperStash</strong> is a website that collects and provides resources that mappers can use.</p>
-				</div>
+			<div id="homeSearch">
+				<p><strong>MapperStash</strong> is a website that collects and provides resources that mappers can use.</p>
+				<form>
+					<input type="text" name="query" required />
+					<input type="submit" value="Find" />
 
-				<div id="search">
-					<form>
-						<input type="text" name="query" />
-						<input type="submit" value="Search" />
-					</form>
-				</div>
+					<a href="#">Advanced search</a>
+					</details>
+				</form>
 			</div>
+
+			<aside id="homeAside">
+	
+			</aside>
 		</main>
