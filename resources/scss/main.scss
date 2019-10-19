@@ -11,9 +11,23 @@ html {
 	height: 100%;
 	font: {
 		weight: 400;
-		size: 12px;
-		family: "Jost", Helvetica, sans-serif;
+		size: 100%;
+		family: "Jost", Futura, "Century Gothic", Helvetica, sans-serif;
 	}
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.smallLink {
+	font-size: 0.8rem;
+}
+
+h1, h2, h3 {
+	text-transform: uppercase;
 }
 
 #logoArea {
@@ -37,7 +51,7 @@ label[for=mobNavToggle]{
 	display: none;
 }
 
-nav {
+header > nav {
 	background: #333;
 	text-align: center;
 	padding: 0.5rem;
@@ -87,6 +101,10 @@ main {
 	padding-left: 2rem;
 	border-left: 1px solid #000;
 	width: calc(40% - 4.5rem);
+	
+	> ul {
+		list-style: none;
+	}
 }
 
 #homeSearch {
@@ -122,7 +140,7 @@ main {
 				width: calc(100% - 7rem);
 				height: 1rem;
 				padding: 0.5rem 1rem;
-				transition: all 0.10s ease-in-out;
+				transition: box-shadow 0.10s ease-in-out;
 	
 				&:invalid {
 					box-shadow: none;
@@ -149,28 +167,71 @@ a {
 	}
 }
 
+section {
+	> :not(.cardView) {
+		width: 90%;
+		margin: 0 auto;
+	}
+}
+
+.card {
+	background: #fff;
+	display: inline-block;
+	margin: 0.5rem;
+	padding: 0.5rem;
+	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+	height: 7rem;
+	width: calc(50% - 2.5rem);
+
+	> img {
+		object: {
+			fit: cover;
+			position: center;
+		}
+		padding-right: 1rem;
+		width: 25%;
+		height: 100%;
+		float: left;
+	}
+}
+
+footer {
+	background-color: #333;
+	display: flex;
+	flex-grow: 1;
+}
+
 @media only screen and (max-width: 600px){
 	nav {
-		display: none;
+		position: absolute;
+		top: -10rem;
+		right: -10rem;
+		opacity: 0;
+		transition: opacity 0.2s;
 	}
 
 	label[for=mobNavToggle] {
 		color: #FFF;
 		display: unset;
 		font-weight: 500;
-		padding: 2.25rem 2rem;
+		padding: 0.75rem 1rem;
+		margin: 1.5rem;
 		position: absolute;
 		top: 0;
 		right: 0;
 		text-transform: uppercase;
+		border: 1px solid #fff;
+		border-radius: 20px;
 
-		&:hover {
-			text-decoration: underline;
+
+		&:before {
+			content: "\2630";
+			padding-right: 0.5rem;
 		}
 	}
 
 	#mobNavToggle:checked ~ nav {
-		display: block;
+		opacity: 1;
 
 		position: absolute;
 		top: 6rem;
@@ -232,6 +293,25 @@ a {
 			top: 1px solid #000000;
 		}
 
-		width: unset;
+		width: 100%;
+	}
+
+	.card {
+		width: 100%;
+		height: unset;
+		padding: 0.5rem 0;
+		margin: 0.5rem 0;
+		
+		> :not(img) {
+			padding: 0.5rem;
+		}
+
+		> img {
+			width: 100%;
+			height: 12rem;
+			float: none;
+			padding: 0;
+			margin: 0;
+		}
 	}
 }
