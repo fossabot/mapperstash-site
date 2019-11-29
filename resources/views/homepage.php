@@ -20,37 +20,30 @@
 			</aside>
 		</main>
 		<section>
-			<h1>Most viewed</h1>
+			<h1>Most downloaded</h1>
 			<ul class="cardView">
 				<li class="card">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Orlando-Ferguson-flat-earth-map_edit.jpg/320px-Orlando-Ferguson-flat-earth-map_edit.jpg" />
-					<h4>Example 1</h4>
-					<small>
-						<span>Map</span>
-						<span>Made by x</span>
-						<span>Submitted by y</span>
-					</small>
-					<p>Some description</p>
-				</li>
-				<li class="card">
 					<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/World_Map_1689.JPG/556px-World_Map_1689.JPG" />
-					<h4>Example 2</h4>
-					<small>
-						<span>Map</span>
-						<span>Made by x</span>
-						<span>Submitted by y</span>
-					</small>
+					<h4><a href="#">Example 1</a></h4>
+					<ul>
+						<li class="rtype">Map</li>
+						<li class="rmade">x</li>
+						<li class="rsubmit">y</li>
+						<li class="rdown">z</li>
+					</ul>
 					<p>Some description</p>
 				</li>
 				<li class="card">
 					<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Map_of_Hindoostan%2C_1788%2C_by_Rennell.jpg/562px-Map_of_Hindoostan%2C_1788%2C_by_Rennell.jpg" />
-					<h4>Example 3</h4>
-					<small>
-						<span>Map</span>
-						<span>Made by x</span>
-						<span>Submitted by y</span>
-					</small>
+					<h4><a href="#">Example 2</a></h4>
+					<ul>
+						<li class="rtype">Map</li>
+						<li class="rmade">x</li>
+						<li class="rsubmit">y</li>
+						<li class="rdown">z</li>
+					</ul>
 					<p>Some description</p>
 				</li>
 			</ul>
+			<a href="#">See more</a>
 		</section>
