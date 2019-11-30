@@ -2,13 +2,10 @@
 		<header>
 			<div id="logoArea">
 				<a href="https://<?php echo $_SERVER['HTTP_HOST']; ?>">
-					<img src="/content/logo.svg" alt="MapperStash Home" />
+					<?php echo file_get_contents($_SERVER['DOCUMENT_ROOT']."/content/logo.svg"); ?>
 				</a>
 			</div>
 
-			<input id="mobNavToggle" type="checkbox" />
-			<label for="mobNavToggle">Menu</label>
-			
 			<nav>
 				<ul>
 					<li><a href="#">Search</a></li>

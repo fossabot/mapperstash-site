@@ -1,24 +1,103 @@
+/* -- Imports -- */
+
 @import url("https://indestructibletype.com/fonts/Jost.css");
 
-* {
+/* -- Global variables -- */
+
+:root {
+	// Colours
+	--bg: #FFF;
+	--sec-bg: #EEE;
+	--alt-bg: #222;
+	--fg: #000;
+	--sec-fg: #FFF;
+	--alt-fg: #5AAFBE;
+	--alt-fg-glow: rgba(90, 175, 190, 1);
+	--shadow: rgba(0,0,0,0.4);
+}
+
+/* -- Mixins -- */
+
+@mixin button {
+	background: var(--alt-bg);
+	border-radius: 20px;
+	border: none;
+	color: var(--sec-fg);
+	height: 2rem;
+	width: 4rem;
+	text-transform: uppercase;
+	font-weight: 500;
+	outline: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+@mixin onelinetext {
+	outline: none;
+	background: var(--bg);
+	border-radius: 20px;
+	border: 1px solid var(--alt-fg);
+	width: calc(100% - 7rem);
+	height: 1rem;
+	padding: 0.5rem 1rem;
+	transition: box-shadow 0.10s ease-in-out;
+
+	&:invalid {
+		box-shadow: none;
+	}
+	
+	&:active, &:focus {
+		border: 1px solid #5aafbe;
+		box-shadow: 0 0 2px var(--alt-fg-glow);
+	}
+}
+
+@mixin icon {
+	padding: 0 0.2rem;
+	width: 1rem;
+	height: 1rem;
+	display: inline-block;
+}
+
+/* -- Styles -- */
+/* - Overall - */
+
+* { // Unsetting normal margins and padding
 	margin: 0;
 	padding: 0;
 }
 
-html {
-	background-color: #EEE;
+html,
+body { // Makes page span over all the window
 	width: 100%;
 	height: 100%;
+}
+
+html {
+	background-color: var(--sec-bg);
+	color: var(--fg);
 	font: {
-		weight: 400;
+		weight: 400; // The normal weight for Jost
+		size: 12px;
 		family: "Jost", Futura, "Century Gothic", Helvetica, sans-serif;
+		// Jost and Century Gothic are Futura clones
 	}
 }
 
 body {
-	display: flex;
+	display: flex; // Used to make footer span to the bottom of the page
 	flex-direction: column;
-	height: 100%;
+}
+
+a {
+	color: var(--alt-fg);
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
 }
 
 .smallLink {
@@ -28,193 +107,26 @@ body {
 h1, h2, h3 {
 	text-transform: uppercase;
 }
-
-#logoArea {
-	background: #222;
-	padding: 1em;
-	height: 4rem;
-}
-
-#logoArea > a {
-	text-decoration: none;
 	
-	> img {
-		display:block;
-		margin: 0 auto;
-		height: 4rem;
-	}
+ul {
+	list-style: none;
 }
 
-#mobNavToggle,
-label[for=mobNavToggle]{
-	display: none;
-}
-
-header > nav {
-	background: #333;
-	text-align: center;
-	padding: 0.5rem;
+form input {
+	font-family: "Jost", Futura, sans-serif; // Needed to replace browser font
 	
-	> ul {
-		list-style-type: none;
+	&[type="submit"] {
+		@include button;
+	}
 
-		> li {
-			display: inline;
-			color: #AAA;
-
-			> a {
-				text: {
-					decoration: none;
-					transform: uppercase;
-				}
-				color: #AAA;
-				font-weight: 600;
-
-				&:hover {
-					text-decoration: underline;
-				}
-			}
-
-			&:not(:last-child):after {
-				content: " - ";
-			}
-		}
+	&[type="text"] {
+		@include onelinetext;
 	}
 }
 
-main {
-	box-shadow: 1px 1px 2px rgba(0,0,0,0.4);
-	margin: 1rem auto;
-	padding: 2rem 1rem;
-	background-color: #FFF;
-	display: flex;
-	flex-wrap: wrap;
-	width: 75%;
-
-	> * {
-		object-fit: contain;
-	}
-}
-
-#homeAside {
-	padding-left: 2rem;
-	border-left: 1px solid #000;
-	width: calc(40% - 4.5rem);
-	
-	> ul {
-		list-style: none;
-	}
-}
-
-#homeSearch {
-	padding-right: 2rem;
-	width: 60%;
-	
-	> p {
-		padding-bottom: 1rem;
-	}
-
-	> form {
-		input {
-			font-family: "Jost", Futura, sans-serif;
-
-			&[type="submit"] {
-				border-radius: 20px;
-				border: none;
-				background: #000;
-				color: #FFF;
-				height: 2rem;
-				width: 4rem;
-				text-transform: uppercase;
-				font-weight: 500;
-
-				&:hover {
-					text-decoration: underline;
-				}
-			}
-
-			&[type="text"] {
-				border-radius: 20px;
-				border: 1px solid #AAA;
-				width: calc(100% - 7rem);
-				height: 1rem;
-				padding: 0.5rem 1rem;
-				transition: box-shadow 0.10s ease-in-out;
-	
-				&:invalid {
-					box-shadow: none;
-				}
-
-				&:active, &:focus {
-					outline: none;
-					border: 1px solid #5aafbe;
-					box-shadow: 0 0 2px rgba(90, 175, 190, 1);
-				}
-			}
-		}
-
-	}
-}
-
-
-a {
-	color: #5aafbe;
-	text-decoration: none;
-
-	&:hover {
-		text-decoration: underline;
-	}
-}
-
-section {
-	> :not(.cardView) {
-		padding: 0 5%;
-	}
-}
-
-.cardView {
-	display: grid;
-	grid-template-columns: auto auto;
-	grid-column-gap: 1rem;
-	margin: 0.5rem 2.5%;
-}
-
-.card {
-	background: #fff;
-	display: inline-block;
-	padding: 1rem;
-	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-	
-	> ul {
-		list-style: none;
-
-		> li {
-			display: inline;
-		}
-	}
-
-	> img {
-		object: {
-			fit: cover;
-			position: center;
-		}
-		padding-right: 1rem;
-		width: 15rem;
-		height: 10rem;
-		float: left;
-	}
-}
-
-.rtype {
+.rtype { // Bolds and uppercases the type of the item
 	text-transform: uppercase;
 	font-weight: 600;
-}
-
-@mixin icon {
-	padding: 0 0.2rem;
-	width: 1rem;
-	height: 1rem;
-	display: inline-block;
 }
 
 .rmade:before {
@@ -231,11 +143,128 @@ section {
 	@include icon;
 	content: url("/content/icons/download.svg");
 }
+	
+/* - Header - */
+
+header {
+	background: var(--alt-bg);
+}
+
+nav {
+	text-align: center;
+	padding: 0.5rem;
+	
+	ul li {
+		color: var(--sec-fg); // This is required to make - white
+		display: inline;
+		
+		> a {
+			color: var(--sec-fg);
+			font-weight: 600; // Makes the font bold
+			text-transform: uppercase;
+		}
+		&:not(:last-child):after {
+			content: " - "; // Adds a - inbetween every link
+		}
+	}
+}
+
+#logoArea {
+	padding: 1em;
+	height: 4rem;
+	
+	svg {
+		display: block;
+		height: 4rem;
+		position: absolute; // Centres logo horizontally
+		left: 50%;
+		transform: translate(-50%, 0);
+
+		#outline {
+			fill: none;
+			stroke: var(--sec-fg);
+			stroke-width: 2px;
+		}
+
+		*:not(#outline) {
+			fill: var(--sec-fg);
+			stroke: none;
+
+			&:not(#ameri) {
+				opacity: 50%; // Makes all other-sided continents grey
+			}
+		}
+	}
+}
+
+/* - Homepage - */
+
+#homeMain {
+	box-shadow: 1px 1px 2px var(--shadow);
+	margin: 1rem 10%;
+	padding: 2rem 1rem;
+	background-color: var(--bg);
+	width: 80%;
+	display: flex; // Used to align announcements to the right
+	flex-wrap: wrap;
+}
+
+#homeAside {
+	padding-left: 2rem;
+	border-left: 1px solid var(--fg);
+	width: calc(40% - 4.5rem); // Used to fit with homeSearch's width of 60%
+}
+
+#homeSearch {
+	padding-right: 2rem;
+	width: 60%;
+	
+	> p {
+		padding-bottom: 1rem; // To seperate the search bar below the text
+	}
+}
+
+.home > :not(.homeCards) {
+	margin: 0 5%; // Spaces out titles and see more links
+}
+
+.homeCards {
+	display: grid;
+	grid: {	// Forces cards into two columns with a 1rem gap
+		template-columns: auto auto; 
+		column-gap: 1rem;
+	}
+	margin: 0.5rem 2.5%;
+}
+
+.homeCard {
+	background: var(--bg);
+	display: inline-block;
+	padding: 1rem;
+	box-shadow: 1px 1px 2px var(--shadow);
+	
+	> ul li {
+		display: inline;
+	}
+
+	> img {
+		object: { // Makes images center onto the given space
+			fit: cover;
+			position: center;
+		}
+		padding-right: 1rem;
+		width: 15rem;
+		height: 10rem;
+		float: left; // Forces the image to the left
+	}
+}
+
+/* - Footer - */
 
 footer {
-	background-color: #333;
+	background-color: var(--alt-bg);
 	flex-grow: 1;
-	color: #fff;
+	color: var(--sec-fg);
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	grid-column-gap: 1rem;
@@ -245,121 +274,44 @@ footer {
 	}
 }
 
+/* -- Mobile -- */
+
 @media only screen and (max-width: 600px){
-	nav {
-		position: absolute;
-		top: -10rem;
-		right: -10rem;
-		opacity: 0;
-		transition: opacity 0.2s;
-	}
-
-	label[for=mobNavToggle] {
-		color: #FFF;
-		display: unset;
-		font-weight: 500;
-		padding: 0.75rem 1rem;
-		margin: 1.5rem;
-		position: absolute;
-		top: 0;
-		right: 0;
-		text-transform: uppercase;
-		border: 1px solid #fff;
-		border-radius: 20px;
-
-
-		&:before {
-			content: "\2630";
-			padding-right: 0.5rem;
-		}
-	}
-
-	#mobNavToggle:checked ~ nav {
-		opacity: 1;
-
-		position: absolute;
-		top: 6rem;
-		right: 0;
-		padding: 1rem;
-
-		* {
-			display: block;
-		}
-		
-		> ul {
-			> li {
-				&:not(:last-child) {
-					> a {
-						border-bottom: 1px solid #aaa;
-					}
-				}
-			
-				&:after {
-					content: none;
-				}
-
-				> a {
-					padding: 1rem;
-				}
-			}
-		}
-	}
-
-	#logoArea {
-		width: unset;	
-
-		> a > img {
-			margin: unset;
-			display: inline-block;
-		}
-	}
-
-
 	main {
+		margin: 1rem 0;
+		padding: 1rem;
 		width: unset;
 	}
 
 	#homeSearch {
-		padding: {
-			right: 0;
-			bottom: 2rem;
-		}
+		padding: 0; 
 		width: unset;
 	}
 
 	#homeAside {
-		padding: {
-			left: 0;
-			top: 2rem;
-		}
-		border: {
-			left: unset;
-			top: 1px solid #000000;
-		}
-
-		width: 100%;
+		padding: 0;
+		border: unset;
+		width: unset;
 	}
 
 	.cardView {
 		display: block;
+		margin: 0;
 	}
 
 	.card {
 		width: 100%;
-		height: unset;
-		padding: 0.5rem 0;
-		margin: 0.5rem 0;
-		
-		> :not(img) {
-			padding: 0.5rem;
-		}
+		padding: 0 0 1rem 0;
+		margin: 0 0 1rem 0;
 
 		> img {
 			width: 100%;
 			height: 12rem;
-			float: none;
-			padding: 0;
-			margin: 0;
+			padding: 0 0 1rem 0;
+		}
+
+		> :not(img) {
+			padding: 0 1rem;
 		}
 	}
 

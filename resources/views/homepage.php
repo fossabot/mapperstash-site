@@ -1,4 +1,4 @@
-		<main>
+		<main id="homeMain">
 			<div id="homeSearch">
 				<p><strong>MapperStash</strong> is a website that collects and provides resources that mappers can use.</p>
 				<form>
@@ -19,10 +19,10 @@
 				<a class="smallLink" href="#">Older notices</a>
 			</aside>
 		</main>
-		<section>
+		<section class="home">
 			<h1>Most downloaded</h1>
-			<ul class="cardView">
-				<li class="card">
+			<ul class="homeCards">
+				<li class="homeCard">
 					<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/World_Map_1689.JPG/556px-World_Map_1689.JPG" />
 					<h4><a href="#">Example 1</a></h4>
 					<ul>
@@ -33,7 +33,7 @@
 					</ul>
 					<p>Some description</p>
 				</li>
-				<li class="card">
+				<li class="homeCard">
 					<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Map_of_Hindoostan%2C_1788%2C_by_Rennell.jpg/562px-Map_of_Hindoostan%2C_1788%2C_by_Rennell.jpg" />
 					<h4><a href="#">Example 2</a></h4>
 					<ul>
