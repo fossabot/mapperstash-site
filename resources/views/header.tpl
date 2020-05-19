@@ -1,15 +1,11 @@
 	<body>
 		<header>
-			<a id="logoLink" href="/">
-				<?php echo file_get_contents($_SERVER['DOCUMENT_ROOT']."/content/logo.svg"); ?>
-			</a>
+			<h1>MapperStash</h1>
 			<nav>
 				<ul>
-					<li><a href="/search">Search</a></li>
-					<li><a href="#">About</a></li>
-					<li><a href="#">Support</a></li>
+					<li><a href="#">Items</a></li>
 					<li><a href="#">Submit</a></li>
+					<li><a href="#">Register/Login</a></li>
 				</ul>
 			</nav>
 		</header>
-	
