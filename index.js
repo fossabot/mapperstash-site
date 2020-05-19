@@ -55,7 +55,7 @@ app.get('/submit', (req, res) => {
   res.send('submit')
 })
 
-app.get('/items/:tags', (req, res) => {
+app.get('/items/(:tags)?', (req, res) => {
   res.send(req.params.tags)
 })
 
