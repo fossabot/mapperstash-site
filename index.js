@@ -1,8 +1,17 @@
 const express = require('express')
+const mariadb = require('mariadb')
+const fs = require('fs')
+
 const app = express()
 
+function getTemplate (path) {
+  const template = fs.readFileSync(path)
+  return new Function(`return \`${template}\``)()
+}
+
 app.get('/', function (req, res) {
-  res.send('Hello World')
+  const page = getTemplate('./resources/views/head.tpl') + getTemplate('./resources/views/homepage.tpl') 
+  res.send(page)
 })
 
 app.get('/item/:itemid', function (req, res) {
