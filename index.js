@@ -31,15 +31,31 @@ app.get('/item/:itemid', (req, res) => {
   res.send(req.params.itemid)
 })
 
+app.get('/tags', (req, res) => {
+  res.send('tags')
+})
+
 app.get('/tag/:tagid', (req, res) => {
   res.send(req.params.tagid)
+})
+
+app.get('/access', (req, res) => {
+  res.send('access')
+})
+
+app.get('/users', (req, res) => {
+  res.send('users')
 })
 
 app.get('/user/:userid', (req, res) => {
   res.send(req.params.userid)
 })
 
-app.get('/search/:tags', (req, res) => {
+app.get('/submit', (req, res) => {
+  res.send('submit')
+})
+
+app.get('/items/:tags', (req, res) => {
   res.send(req.params.tags)
 })
 
