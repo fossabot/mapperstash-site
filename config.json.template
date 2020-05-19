@@ -1,0 +1,7 @@
+{
+    "mariadb":{
+        "user":"PLACEHOLDER",
+        "password":"PLACEHOLDER",
+        "host":"localhost",
+    }
+}

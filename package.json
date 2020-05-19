@@ -2,6 +2,7 @@
   "license": "GPL-3.0",
   "repository": "github:deekts/mapperstash-site",
   "dependencies": {
+    "bcrypt": "^4.0.1",
     "express": "^4.17.1",
     "mariadb": "^2.3.1"
   }
