@@ -65,12 +65,12 @@ a:hover {
 	font-size: 0.75rem;
 }
 
-#home > form {
+#home > #search {
 	display: flex;
 	flex-flow: row;
 }
 
-#home > form > input[type=text] {
+#home > #search > input[type=text] {
 	flex-grow: 1;
 	margin-right: 0.5rem;
 }
