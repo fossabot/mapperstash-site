@@ -1,7 +1,8 @@
 {
-    "mariadb":{
+    "mongodb":{
         "user":"PLACEHOLDER",
         "password":"PLACEHOLDER",
-        "host":"localhost",
+        "host":"PLACEHOLDER",
+        "port":27017,
     }
 }

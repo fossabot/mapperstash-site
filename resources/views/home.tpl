@@ -11,5 +11,5 @@ document.getElementById('searchbtn').onclick = _ => {
 }
 		</script>
 		<footer>
-			<p>${p.itemcount} items and ${p.itemcount} tags</p>
+			<p>${p.itemcount} items and ${p.tagcount} tags</p>
 		</footer>

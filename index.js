@@ -1,5 +1,5 @@
 const express = require('express')
-const mariadb = require('mariadb')
+const mongoclient = require('mongodb').MongoClient
 const fs = require('fs')
 const config = require('./config.json')
 
@@ -10,20 +10,32 @@ function getTemplate (path, p) {
   return new Function('p',`return \`${template}\``)(p)
 }
 
+let mongourl = 'mongodb://'
+if (config.mongodb.user) mongourl += config.mongodb.user
+if (config.mongodb.password) mongourl += `:${config.mongodb.password}`
+if (config.mongodb.user) mongourl += '@'
+mongourl += config.mongodb.host
+if (config.mongodb.port) mongourl += `:${config.mongodb.port}`
+
+const mongoopts = { useNewUrlParser: true, useUnifiedTopology: true }
+
 app.use(express.static('public'))
 
 app.get('/', async (req, res) => {
-  const conn = await mariadb.createConnection(config.mariadb)
-  await conn.query('use mapperstash')
+  const client = new mongoclient(mongourl, mongoopts)
+  await client.connect()
+  const db = client.db('mapperstash')
 
   let page = getTemplate('./resources/views/head.tpl')
   page += getTemplate('./resources/views/header.tpl')
 
-  const itemcount = (await conn.query('select count(*) from items'))[0]['count(*)']
-  const tagcount = (await conn.query('select count(*) from tags'))[0]['count(*)']
+  const itemcount = await db.collection('items').countDocuments()
+  const tagcount = await db.collection('tags').countDocuments()
 
-  page += getTemplate('./resources/views/home.tpl',{"itemcount": itemcount, "tag count": tagcount})
+  page += getTemplate('./resources/views/home.tpl', {"itemcount": itemcount, "tagcount": tagcount})
   page += getTemplate('./resources/views/foot.tpl')
+
+  client.close()
   res.send(page)
 })
 
@@ -55,8 +67,19 @@ app.get('/submit', (req, res) => {
   res.send('submit')
 })
 
-app.get('/items/(:tags)?', (req, res) => {
-  res.send(req.params.tags)
+app.get('/items/(:tags)?', async (req, res) => {
+  if (!req.params.tags) return
+
+  const client = new mongoclient(mongourl, mongoopts)
+  await client.connect()
+  const db = client.db('mapperstash')
+
+  let selectors, tagids = []
+  selectors = req.params.tags.split('+')
+
+  selectors.forEach(selector => {
+    tagids.push(await client.collection('tags').find({ tag: selector }))
+  })
 })
 
 app.listen(3000)
