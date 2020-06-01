@@ -10,21 +10,12 @@ function getTemplate (path, p) {
   return new Function('p',`return \`${template}\``)(p)
 }
 
-let mongourl = 'mongodb://'
-if (config.mongodb.user) mongourl += config.mongodb.user
-if (config.mongodb.password) mongourl += `:${config.mongodb.password}`
-if (config.mongodb.user) mongourl += '@'
-mongourl += config.mongodb.host
-if (config.mongodb.port) mongourl += `:${config.mongodb.port}`
-
-const mongoopts = { useNewUrlParser: true, useUnifiedTopology: true }
-
 app.use(express.static('public'))
 
 app.get('/', async (req, res) => {
-  const client = new mongoclient(mongourl, mongoopts)
+  const client = new mongoclient(config.mongodb.url, config.mongodb.opts)
   await client.connect()
-  const db = client.db('mapperstash')
+  const db = client.db(config.mongodb.db)
 
   let page = getTemplate('./resources/views/head.tpl')
   page += getTemplate('./resources/views/header.tpl')
@@ -68,18 +59,17 @@ app.get('/submit', (req, res) => {
 })
 
 app.get('/items/(:tags)?', async (req, res) => {
-  if (!req.params.tags) return
+  if (!req.params.tags) return res.send('placeholder')
 
-  const client = new mongoclient(mongourl, mongoopts)
+  const client = new mongoclient(config.mongodb.url, config.mongodb.opts)
   await client.connect()
-  const db = client.db('mapperstash')
+  const db = client.db(config.mongodb.db)
 
-  let selectors, tagids = []
-  selectors = req.params.tags.split('+')
+  var filters = req.params.tags.split('+')
 
-  selectors.forEach(selector => {
-    tagids.push(await client.collection('tags').find({ tag: selector }))
-  })
+  const results = (await db.collection('items').find({ tags: { $all: filters } }).toArray())
+
+  res.send(results)
 })
 
 app.listen(3000)

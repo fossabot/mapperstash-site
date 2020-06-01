@@ -1,8 +1,10 @@
 {
-    "mongodb":{
-        "user":"PLACEHOLDER",
-        "password":"PLACEHOLDER",
-        "host":"PLACEHOLDER",
-        "port":27017,
+    "mongodb": {
+        "db": "mapperstash",
+        "url": "mongodb://localhost",
+        "opts": {
+            "useNewUrlParser": true,
+            "useUnifiedTopology": true
+        }
     }
 }
