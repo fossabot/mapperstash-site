@@ -21,9 +21,8 @@ app.get('/', async (req, res) => {
   page += getTemplate('./resources/views/header.tpl')
 
   const itemcount = await db.collection('items').countDocuments()
-  const tagcount = await db.collection('tags').countDocuments()
 
-  page += getTemplate('./resources/views/home.tpl', {"itemcount": itemcount, "tagcount": tagcount})
+  page += getTemplate('./resources/views/home.tpl', {"itemcount": itemcount})
   page += getTemplate('./resources/views/foot.tpl')
 
   client.close()
@@ -32,14 +31,6 @@ app.get('/', async (req, res) => {
 
 app.get('/item/:itemid', (req, res) => {
   res.send(req.params.itemid)
-})
-
-app.get('/tags', (req, res) => {
-  res.send('tags')
-})
-
-app.get('/tag/:tagid', (req, res) => {
-  res.send(req.params.tagid)
 })
 
 app.get('/access', (req, res) => {
@@ -65,11 +56,27 @@ app.get('/items/(:tags)?', async (req, res) => {
   await client.connect()
   const db = client.db(config.mongodb.db)
 
-  var filters = req.params.tags.split('+')
+  let page = getTemplate('./resources/views/head.tpl')
+  page += getTemplate('./resources/views/header.tpl')
+  page += getTemplate('./resources/views/itemsearch.tpl')
 
+  var filters = req.params.tags.split('+')
   const results = (await db.collection('items').find({ tags: { $all: filters } }).toArray())
 
-  res.send(results)
+  results.forEach(result => {
+    const link = `/item/${result._id}`
+    let tagfrag = '<ul class="searchtags">'
+    result.tags.forEach(tag => {
+      tagfrag += `<li>${tag}</li>`
+    })
+    tagfrag += '</ul>'
+
+    page += getTemplate('./resources/views/itemresult.tpl', {"link": link, "text": result.name, "url": result.url, "tags": tagfrag})
+  })
+
+  page += getTemplate('./resources/views/foot.tpl')
+
+  res.send(page)
 })
 
 app.listen(3000)
