@@ -49,19 +49,28 @@ app.get('/submit', (req, res) => {
   res.send('submit')
 })
 
-app.get('/items/(:tags)?', async (req, res) => {
-  if (!req.params.tags) return res.send('placeholder')
-
+app.get('/items/(:tags)?(/:page)?', async (req, res) => {
   const client = new mongoclient(config.mongodb.url, config.mongodb.opts)
   await client.connect()
   const db = client.db(config.mongodb.db)
 
+  var filters
+  var query = '.find(queryobj)'
+  var queryobj = {}
+  if (req.params.tags) {
+    filters = req.params.tags.split('+')
+    queryobj.tags = { $all: filters}
+  }
+  if (Number.isInteger(Number(req.params.page))) {
+    query += `.skip(${req.params.page * 10})`
+  }
+  query += '.limit(10).toArray()'
+
+  const results = (await eval(`db.collection('items')${query}`))
+
   let page = getTemplate('./resources/views/head.tpl')
   page += getTemplate('./resources/views/header.tpl')
   page += getTemplate('./resources/views/itemsearch.tpl')
-
-  var filters = req.params.tags.split('+')
-  const results = (await db.collection('items').find({ tags: { $all: filters } }).toArray())
 
   results.forEach(result => {
     const link = `/item/${result._id}`
