@@ -61,7 +61,7 @@ app.get('/items/(:tags)?(/:page)?', async (req, res) => {
     filters = req.params.tags.split('+')
     queryobj.tags = { $all: filters}
   }
-  if (Number.isInteger(Number(req.params.page))) {
+  if (Number.isInteger(Number(req.params.page)) && Number(req.params.page) >= 0) {
     query += `.skip(${req.params.page * 10})`
   }
   query += '.limit(10).toArray()'
@@ -83,6 +83,7 @@ app.get('/items/(:tags)?(/:page)?', async (req, res) => {
     page += getTemplate('./resources/views/itemresult.tpl', {"link": link, "text": result.name, "url": result.url, "tags": tagfrag})
   })
 
+  page += getTemplate('./resources/views/itempagination.tpl')
   page += getTemplate('./resources/views/foot.tpl')
 
   res.send(page)

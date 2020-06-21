@@ -8,8 +8,6 @@ body {
 	padding: 2rem;
 	margin: 0 auto;
 	max-width: 40rem;
-	position: absolute;
-	top:0; bottom:0; left:0; right:0;
 }
 
 main {
@@ -73,4 +71,17 @@ a:hover {
 #search > input[type=text] {
 	flex-grow: 1;
 	margin-right: 0.5rem;
+}
+
+#itemPagination {
+	text-align: right;
+}
+
+#itemPagination > ul {
+	display: inline-block;
+	margin-left: 1rem;
+}
+
+#itemPage {
+	width: 3rem;
 }
