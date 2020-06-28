@@ -49,7 +49,7 @@ app.get('/submit', (req, res) => {
   res.send('submit')
 })
 
-app.get('/items/(:tags)?(/:page)?', async (req, res) => {
+app.get('/items', async (req, res) => {
   const client = new mongoclient(config.mongodb.url, config.mongodb.opts)
   await client.connect()
   const db = client.db(config.mongodb.db)
@@ -57,12 +57,17 @@ app.get('/items/(:tags)?(/:page)?', async (req, res) => {
   var filters
   var query = '.find(queryobj)'
   var queryobj = {}
-  if (req.params.tags) {
-    filters = req.params.tags.split('+')
+  if (req.query.tags) {
+    filters = req.query.tags.split('+')
     queryobj.tags = { $all: filters}
   }
-  if (Number.isInteger(Number(req.params.page)) && Number(req.params.page) >= 0) {
-    query += `.skip(${req.params.page * 10})`
+
+  const itemcount = await db.collection('items').countDocuments(queryobj)
+  const pages = Math.ceil(itemcount / 10)
+
+  if (req.query.page) {
+    if (!(Number.isInteger(Number(req.query.page))) || req.query.page < 1) return res.send("Error")
+    query += `.skip(${(req.query.page - 1) * 10})`
   }
   query += '.limit(10).toArray()'
 
@@ -83,7 +88,9 @@ app.get('/items/(:tags)?(/:page)?', async (req, res) => {
     page += getTemplate('./resources/views/itemresult.tpl', {"link": link, "text": result.name, "url": result.url, "tags": tagfrag})
   })
 
-  page += getTemplate('./resources/views/itempagination.tpl')
+  const currentpage = Number(req.query.page) || 1
+
+  page += getTemplate('./resources/views/itempagination.tpl', {"currentpage": currentpage, "lastpage": pages})
   page += getTemplate('./resources/views/foot.tpl')
 
   res.send(page)

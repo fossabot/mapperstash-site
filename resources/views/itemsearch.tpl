@@ -11,6 +11,8 @@ document.getElementById('searchtxt').addEventListener('keyup', press => {
 
 document.getElementById('searchbtn').onclick = _ => {
   let formattedTags = document.getElementById('searchtxt').value.replace(/ +/g, '+')
-  location.href = location.protocol + '//' + location.hostname + ':' + location.port + '/items/' + formattedTags
+  const newlocation = new URL(location.protocol + '//' + location.hostname + ':' + location.port + '/items')
+  newlocation.searchParams.append('tags', formattedTags)
+  location = newlocation
 }
 		</script>

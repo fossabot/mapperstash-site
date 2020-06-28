@@ -32,7 +32,8 @@ button, input[type=submit] {
 	font-size: inherit;
 }
 
-input[type=text] {
+input[type=text],
+input[type=number] {
 	border-radius: 1rem;
 	padding: 0.25rem 1rem;
 	border: 1px #000 solid;
@@ -83,5 +84,5 @@ a:hover {
 }
 
 #itemPage {
-	width: 3rem;
+	width: 2rem;
 }
