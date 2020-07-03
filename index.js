@@ -29,20 +29,26 @@ app.get('/', async (req, res) => {
   res.send(page)
 })
 
-app.get('/item/:itemid', (req, res) => {
-  res.send(req.params.itemid)
+app.get('/item', (req, res) => {
+  res.send(req.query.itemid)
 })
 
-app.get('/access', (req, res) => {
-  res.send('access')
+app.get('/register', (req, res) => {
+  var page = getTemplate('./resources/views/register.tpl')
+
+  res.send(page)
+})
+
+app.get('/login', (req, res) => {
+  res.send('login')
 })
 
 app.get('/users', (req, res) => {
   res.send('users')
 })
 
-app.get('/user/:userid', (req, res) => {
-  res.send(req.params.userid)
+app.get('/user', (req, res) => {
+  res.send(req.query.userid)
 })
 
 app.get('/submit', (req, res) => {
@@ -93,6 +99,7 @@ app.get('/items', async (req, res) => {
   page += getTemplate('./resources/views/itempagination.tpl', {"currentpage": currentpage, "lastpage": pages})
   page += getTemplate('./resources/views/foot.tpl')
 
+  client.close()
   res.send(page)
 })
 
