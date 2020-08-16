@@ -4,59 +4,37 @@ const router = express.Router()
 const config = require('./../config.json')
 
 router.get('/items', async (req, res) => {
-  const ItemModel = require('../models/items.js')
-  const TagModel = require('../models/tags.js')
+  const ItemService = require('../services/items.js')
+  const TagService = require('../services/tags.js')
+
   var querytags, includes, excludes
   if (req.query.tags) {
     querytags = req.query.tags.split(' ')
 
-    if (querytags.some(querytag => querytag.startsWith('-'))) {
-      excludes = querytags.filter(querytag => querytag.startsWith('-'))
-      excludes = excludes.map(exclude => {return exclude.substring(1)})
-      querytags = querytags.filter(querytag => !(querytag.startsWith('-')))
-    }
-    if (querytags.length) {
-      includes = querytags
-    }
+    ({includes, excludes} = ItemService.querytagsParse(querytags))
 
     if (includes) {
-      includes = await Promise.all(includes.map(async include => {
-        return TagModel.findOne({ tag: include }).exec()
-      }))
-      includes = includes.map(include => {return include.id})
+      includes = await TagService.getIdFromTag(includes)
     }
 
     if (excludes) {
-      excludes = await Promise.all(excludes.map(async exclude => {
-        return TagModel.findOne({ tag: exclude }).exec()
-      }))
-      excludes = excludes.map(exclude => {return exclude.id})
+      excludes = await TagService.getIdFromTag(excludes)
     }
   }
 
-  var countquery = ItemModel.countDocuments()
+  const itemcount = await ItemService.countQuery(includes, excludes)
 
-  if (includes) countquery.where('tags').all(includes)
-  if (excludes) countquery.where('tags').nin(excludes)
-
-  const itemcount = await countquery.exec()
   const pagesize = 10
+  const currentpage = req.query.page || 1
   const pages = Math.ceil(itemcount / pagesize)
-
-  var pagequery = ItemModel.find()
 
   if (req.query.page) {
     if (!(Number.isInteger(Number(req.query.page))) || req.query.page < 1) return res.send("Error")
-    pagequery.skip((req.query.page - 1) * pagesize)
   }
-  pagequery.limit(pagesize)
 
-  if (includes) pagequery.where('tags').all(includes)
-  if (excludes) pagequery.where('tags').nin(excludes)
+  const pageresults = await ItemService.itemQuery(req.query.page, pagesize, includes, excludes)
 
-  var pageresults = await pagequery.populate('tags').exec()
-
-  res.render('items.ejs', {items: pageresults, lastpage: pages, currentpage: itemcount})
+  res.render('items.ejs', {items: pageresults, lastpage: pages, currentpage: currentpage})
 })
 
 module.exports = router
