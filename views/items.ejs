@@ -22,7 +22,11 @@ document.getElementById('searchbtn').onclick = _ => {
 		<section class="itemResult">
 			<h2><a href="<%- item.id -%>"><%- item.name -%></a></h2>
 			<h3><a href="<%- item.url -%>"><%- item.url -%></a></h3>
-			<%- item.tags -%>
+			<ul>
+<% item.tags.forEach(tag => { %>
+				<li><a href="<%- tag.id -%>"><%- tag.tag -%></a></li>
+<% }) %>
+			</ul>
 		</section>
 <% }) %>
 		<footer id="itemPagination">
@@ -38,7 +42,6 @@ document.getElementById('paginationPrev').onclick = _ => {
   const currentlocation = new URL(location.href)
 
   if (!(currentlocation.searchParams.has('page')) || currentlocation.searchParams.get('page') == 1) return
-
   const newlocation = new URL(location.href)
   newlocation.searchParams.set('page', Number(currentlocation.searchParams.get('page')) - 1)
 

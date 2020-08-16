@@ -54,7 +54,7 @@ router.get('/items', async (req, res) => {
   if (includes) pagequery.where('tags').all(includes)
   if (excludes) pagequery.where('tags').nin(excludes)
 
-  var pageresults = await pagequery.exec()
+  var pageresults = await pagequery.populate('tags').exec()
 
   res.render('items.ejs', {items: pageresults, lastpage: pages, currentpage: itemcount})
 })
