@@ -8,9 +8,7 @@ function querytagsParse(querytags) {
     excludes = excludes.map(exclude => {return exclude.substring(1)})
     querytags = querytags.filter(querytag => !(querytag.startsWith('-')))
   }
-  if (querytags.length) {
-    includes = querytags
-  }
+  if (querytags.length) includes = querytags
 
   return {includes: includes, excludes: excludes}
 }
@@ -32,14 +30,14 @@ async function estimatedCount() {
   return await ItemModel.estimatedDocumentCount()
 }
 
-async function itemQuery(page, pagesize, includes, excludes) {
+async function itemQuery(pagination, includes, excludes) {
   var pagequery = ItemModel.find()
 
   queryFilter(includes, excludes)
 
-  if (page) pagequery.skip((page - 1) * pagesize)
+  if (pagination.page && pagination.size) pagequery.skip((pagination.page - 1) * pagination.size)
 
-  pagequery.limit(pagesize)
+  if (pagination.size) pagequery.limit(pagination.size)
 
   return await pagequery.populate('tags').exec()
 }

@@ -6,18 +6,6 @@
 				<button id="searchbtn">Search</button>
 			</div>
 		</section>
-		<script>
-document.getElementById('searchtxt').addEventListener('keyup', press => {
-  if (press.key == 'Enter') document.getElementById('searchbtn').click()
-})
-
-document.getElementById('searchbtn').onclick = _ => {
-  let formattedTags = document.getElementById('searchtxt').value.replace(/ +/g, '+')
-  const newlocation = new URL(location.protocol + '//' + location.hostname + ':' + location.port + '/items')
-  newlocation.searchParams.append('tags', formattedTags)
-  location = newlocation
-}
-		</script>
 <% items.forEach(item => { %>
 		<section class="itemResult">
 			<h2><a href="<%- item.id -%>"><%- item.name -%></a></h2>
@@ -30,14 +18,27 @@ document.getElementById('searchbtn').onclick = _ => {
 		</section>
 <% }) %>
 		<footer id="itemPagination">
-			<input type="number" id="itemPage" max="<%- lastpage -%>" min="1" value="<%- currentpage -%>">
-			<label for="itemPage">/<%- lastpage -%></label>
+			<span><%- resultcount -%> results</span>
+			<label for="itemPage">
+				<input type="number" id="itemPage" max="<%- pagination.pages -%>" min="1" value="<%- pagination.page -%>"> /<%- pagination.pages -%>
+			</label>
 			<ul>
 				<li><a id="paginationPrev">prev</a></li>
 				<li><a id="paginationNext">next</a></li>
 			</ul>
 		</footer>
 		<script>
+document.getElementById('searchtxt').addEventListener('keyup', press => {
+  if (press.key == 'Enter') document.getElementById('searchbtn').click()
+})
+
+document.getElementById('searchbtn').onclick = _ => {
+  let formattedTags = document.getElementById('searchtxt').value.replace(/ +/g, '+')
+  const newlocation = new URL(location.protocol + '//' + location.hostname + ':' + location.port + '/items')
+  newlocation.searchParams.append('tags', formattedTags)
+  location = newlocation
+}
+
 document.getElementById('paginationPrev').onclick = _ => {
   const currentlocation = new URL(location.href)
 
@@ -52,7 +53,7 @@ document.getElementById('paginationNext').onclick = _ => {
   const currentlocation = new URL(location.href)
 
   if (!(currentlocation.searchParams.has('page'))) currentlocation.searchParams.set('page', 1)
-  if (currentlocation.searchParams.get('page') == <%- lastpage -%>) return
+  if (currentlocation.searchParams.get('page') == <%- pagination.pages -%>) return
 
   const newlocation = new URL(location.href)
   newlocation.searchParams.set('page', Number(currentlocation.searchParams.get('page')) + 1)
