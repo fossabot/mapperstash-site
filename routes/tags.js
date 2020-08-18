@@ -1,0 +1,27 @@
+const mongoose = require('mongoose')
+const express = require('express')
+const router = express.Router()
+const config = require('./../config.json')
+
+router.get('/tags', async (req, res) => {
+  const TagService = require('../services/tags.js')
+
+  const searchText = req.query.text || ""
+
+  const itemcount = await TagService.tagTextCount(searchText)
+
+  var pagination = {}
+  pagination.size = Number(req.query.size) || 10
+  pagination.page = req.query.page || 1
+  pagination.pages = Math.ceil(itemcount / pagination.size)
+
+  if (req.query.page) {
+    if (!(Number.isInteger(Number(req.query.page))) || req.query.page < 1) return res.send('Error')
+  }
+
+  const pageresults = await TagService.tagTextSearch(pagination, searchText)
+
+  res.render('tags.ejs', {items: pageresults, pagination: pagination, resultcount: itemcount})
+})
+
+module.exports = router

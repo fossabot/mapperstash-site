@@ -1,0 +1,76 @@
+<%- include('head.ejs') -%>
+<%- include('header.ejs') -%>
+		<section id="itemsearch">
+			<div id="search">
+				<input id="searchtxt" type="text" />
+				<button id="searchbtn">Search</button>
+			</div>
+		</section>
+<% items.forEach(item => { %>
+		<section class="itemResult">
+			<h2><a href="<%- item.id -%>"><%- item.tag -%></a></h2>
+			<h3><a href="<%- item.id -%>"><%- item.id -%></a></h3>
+			<ul>
+<% item.implied.forEach(tag => { %>
+				<li><a href="<%- tag.id -%>"><%- tag.tag -%></a></li>
+<% }) %>
+			</ul>
+		</section>
+<% }) %>
+		<footer id="itemPagination">
+			<span><%- resultcount -%> results</span>
+			<label for="itemPage">
+				<input type="number" id="itemPage" max="<%- pagination.pages -%>" min="1" value="<%- pagination.page -%>"> /<%- pagination.pages -%>
+			</label>
+			<ul>
+				<li><a id="paginationPrev">prev</a></li>
+				<li><a id="paginationNext">next</a></li>
+			</ul>
+		</footer>
+		<script>
+document.getElementById('searchtxt').addEventListener('keyup', press => {
+  if (press.key == 'Enter') document.getElementById('searchbtn').click()
+})
+
+document.getElementById('searchbtn').onclick = _ => {
+  let searchText = document.getElementById('searchtxt').value
+  const newlocation = new URL(location.protocol + '//' + location.hostname + ':' + location.port + '/tags')
+  newlocation.searchParams.append('text', searchText)
+  location = newlocation
+}
+
+document.getElementById('paginationPrev').onclick = _ => {
+  const currentlocation = new URL(location.href)
+
+  if (!(currentlocation.searchParams.has('page')) || currentlocation.searchParams.get('page') == 1) return
+  const newlocation = new URL(location.href)
+  newlocation.searchParams.set('page', Number(currentlocation.searchParams.get('page')) - 1)
+
+  location = newlocation
+}
+
+document.getElementById('paginationNext').onclick = _ => {
+  const currentlocation = new URL(location.href)
+
+  if (!(currentlocation.searchParams.has('page'))) currentlocation.searchParams.set('page', 1)
+  if (currentlocation.searchParams.get('page') == <%- pagination.pages -%>) return
+
+  const newlocation = new URL(location.href)
+  newlocation.searchParams.set('page', Number(currentlocation.searchParams.get('page')) + 1)
+
+  location = newlocation
+}
+
+const itemPage = document.getElementById('itemPage')
+itemPage.addEventListener('keyup', press => {
+  if (!(press.key == 'Enter')) return
+
+  if (!(itemPage.validity.valid)) return
+
+  const newlocation = new URL(location.href)
+  newlocation.searchParams.set('page', itemPage.value)
+
+  location = newlocation
+})
+		</script>
+<%- include('foot.ejs') -%>

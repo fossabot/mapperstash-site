@@ -31,15 +31,19 @@ async function estimatedCount() {
 }
 
 async function itemQuery(pagination, includes, excludes) {
-  var pagequery = ItemModel.find()
+  var query = ItemModel.find()
 
   queryFilter(includes, excludes)
 
-  if (pagination.page && pagination.size) pagequery.skip((pagination.page - 1) * pagination.size)
+  if (pagination.page && pagination.size) query.skip((pagination.page - 1) * pagination.size)
 
-  if (pagination.size) pagequery.limit(pagination.size)
+  if (pagination.size) query.limit(pagination.size)
 
-  return await pagequery.populate('tags').exec()
+  return await query.populate('tags').exec()
+}
+
+async function tagUses(tag) {
+  return await ItemModel.countDocuments().where('tags').all(tag).exec()
 }
 
 module.exports.querytagsParse = querytagsParse
@@ -47,3 +51,4 @@ module.exports.queryFilter = queryFilter
 module.exports.countQuery = countQuery
 module.exports.estimatedCount = estimatedCount
 module.exports.itemQuery = itemQuery
+module.exports. tagUses = tagUses
