@@ -9,7 +9,7 @@
 <% items.forEach(item => { %>
 		<section class="itemResult">
 			<h2><a href="<%- item.id -%>"><%- item.tag -%></a></h2>
-			<h3><a href="<%- item.id -%>"><%- item.id -%></a></h3>
+			<h3><%- item.uses -%></h3>
 			<ul>
 <% item.implied.forEach(tag => { %>
 				<li><a href="<%- tag.id -%>"><%- tag.tag -%></a></li>

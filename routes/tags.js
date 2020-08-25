@@ -5,6 +5,7 @@ const config = require('./../config.json')
 
 router.get('/tags', async (req, res) => {
   const TagService = require('../services/tags.js')
+  const ItemService = require('../services/items.js')
 
   const searchText = req.query.text || ""
 
@@ -20,6 +21,10 @@ router.get('/tags', async (req, res) => {
   }
 
   const pageresults = await TagService.tagTextSearch(pagination, searchText)
+
+  await Promise.all(pageresults.map(async result => {
+    result.uses = await ItemService.tagUses(result.id)
+  }))
 
   res.render('tags.ejs', {items: pageresults, pagination: pagination, resultcount: itemcount})
 })
