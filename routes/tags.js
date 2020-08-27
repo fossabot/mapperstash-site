@@ -1,13 +1,12 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const router = express.Router()
-const config = require('./../config.json')
 
 router.get('/tags', async (req, res) => {
   const TagService = require('../services/tags.js')
   const ItemService = require('../services/items.js')
 
-  const searchText = req.query.text || ""
+  const searchText = req.query.text || ''
 
   const itemcount = await TagService.tagTextCount(searchText)
 

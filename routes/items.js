@@ -1,17 +1,16 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const router = express.Router()
-const config = require('./../config.json')
 
 router.get('/items', async (req, res) => {
   const ItemService = require('../services/items.js')
   const TagService = require('../services/tags.js')
 
-  var querytags, includes, excludes
+  var queryParts, includes, excludes
   if (req.query.tags) {
-    querytags = req.query.tags.split(' ')
+    queryParts = req.query.tags.split(' ')
 
-    ;({includes, excludes} = ItemService.querytagsParse(querytags))
+    ;({includes, excludes} = TagService.parseTags(queryParts))
 
     if (includes) includes = await TagService.getIdFromTag(includes)
     if (excludes) excludes = await TagService.getIdFromTag(excludes)

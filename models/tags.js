@@ -9,7 +9,7 @@ var TagSchema = new mongoose.Schema({
 })
 
 TagSchema.path('tag').validate(async checkedTag => {
-  const legalTag = new RegExp('^[A-Za-z0-9\-]+$')
+  const legalTag = new RegExp('^[A-Za-z0-9-]+$')
   if (!legalTag.test(checkedTag)) return false
 
   const duplicateTag = await TagSchema.countDocuments({url: {$regex: `^${checkedTag}$`, $options: 'i'}})

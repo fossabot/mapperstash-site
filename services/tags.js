@@ -1,5 +1,19 @@
 const TagModel = require('../models/tags.js')
 
+function parseTags(tags) {
+  var excludes, includes
+
+  if (tags.some(tag => tag.startsWith('-'))) {
+    excludes = tags.filter(tag => tag.startsWith('-'))
+    excludes = excludes.map(exclude => {return exclude.substring(1)})
+
+    tags = tags.filter(tag => !(tag.startsWith('-')))
+  }
+  if (tags.length) includes = tags
+
+  return {includes: includes, excludes: excludes}
+}
+
 async function getIdFromTag(tags) {
   tags = await Promise.all(tags.map(async tag => {
     return TagModel.findOne({ tag: tag }).exec()
@@ -15,13 +29,14 @@ async function tagTextSearch(pagination, text) {
 
   if (pagination.size) tagquery.limit(pagination.size)
 
-  return await tagquery.exec()
+  return tagquery.exec()
 }
 
 async function tagTextCount(text) {
-  return await TagModel.countDocuments({tag: {$regex: text, $options: 'i'}}).exec()
+  return TagModel.countDocuments({tag: {$regex: text, $options: 'i'}}).exec()
 }
 
+module.exports.parseTags = parseTags
 module.exports.getIdFromTag = getIdFromTag
 module.exports.tagTextSearch = tagTextSearch
 module.exports.tagTextCount = tagTextCount
