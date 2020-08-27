@@ -5,19 +5,15 @@ const router = express.Router()
 router.get('/tags', async (req, res) => {
   const TagService = require('../services/tags.js')
   const ItemService = require('../services/items.js')
+  const SearchService = require('../services/search.js')
 
   const searchText = req.query.text || ''
 
   const itemcount = await TagService.tagTextCount(searchText)
 
-  var pagination = {}
-  pagination.size = Number(req.query.size) || 10
-  pagination.page = req.query.page || 1
-  pagination.pages = Math.ceil(itemcount / pagination.size)
+  if (req.query.page && !SearchService.validPage(req.query.page)) throw new Error()
 
-  if (req.query.page) {
-    if (!(Number.isInteger(Number(req.query.page))) || req.query.page < 1) return res.send('Error')
-  }
+  const pagination = SearchService.paginationCalc(itemcount, req.query)
 
   const pageresults = await TagService.tagTextSearch(pagination, searchText)
 
