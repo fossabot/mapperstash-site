@@ -1,4 +1,5 @@
 const express = require('express')
+const bodyparser = require('body-parser')
 const https = require('https')
 const mongoose = require('mongoose')
 const fs = require('fs')
@@ -14,6 +15,10 @@ for (route of routeFiles) {
   app.use('/', router)
 }
 
+mongoose.set('useNewUrlParser', true)
+mongoose.set('useUnifiedTopology', true)
+mongoose.set('useFindAndModify', false)
+mongoose.set('useCreateIndex', true)
 mongoose.connect(config.mongoose.url, config.mongoose.opts)
 
 app.use(express.static('public'))

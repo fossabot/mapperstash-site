@@ -1,8 +1,9 @@
 var mongoose = require('mongoose')
+var uniquevalidator = require('mongoose-unique-validator')
 var bcrypt = require('bcrypt')
 
 var UserSchema = new mongoose.Schema({
-  name: {type: String, required: true},
+  name: {type: String, required: true, unique: true, uniqueCaseInsensitive: true},
   password: {type: String, required: true}
 })
 
@@ -10,11 +11,10 @@ UserSchema.path('name').validate(async checkedName => {
   const legalName = new RegExp('^[A-Za-z0-9\-]+$')
   if (!legalName.test(checkedName)) return false
 
-  const duplicateName = await UserSchema.countDocuments({url: {$regex: `^${checkedName}$`, $options: 'i'}})
-  if (duplicateName) return false
-
   return true
 })
+
+UserSchema.plugin(uniquevalidator)
 
 UserSchema.path('password').validate(async checkedPassword => {
   if (checkedPassword.length > 64) return false
@@ -23,7 +23,7 @@ UserSchema.path('password').validate(async checkedPassword => {
   return true
 })
 
-UserSchema.pre('save',async next => {
+UserSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next()
 
   const salt = await bcrypt.genSalt(16)

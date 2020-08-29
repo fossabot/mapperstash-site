@@ -1,7 +1,8 @@
 var mongoose = require('mongoose')
+var uniquevalidator = require('mongoose-unique-validator')
 
 var ItemSchema = new mongoose.Schema({
-  url: {type: String, required: true},
+  url: {type: String, required: true, unique: true, uniqueCaseInsensitive: true},
   name: String,
   tags: [{
     type: mongoose.Schema.ObjectId,
@@ -17,10 +18,9 @@ ItemSchema.path('url').validate(async checkedUrl => {
     return false
   }
 
-  const duplicateUrl = await ItemSchema.countDocuments({url: {$regex: `^${checkedUrl}$`, $options: 'i'}})
-  if (duplicateUrl) return false
-
   return true
 })
+
+ItemSchema.plugin(uniquevalidator)
 
 module.exports = mongoose.model('Item', ItemSchema)
