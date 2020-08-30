@@ -1,6 +1,6 @@
 <%- include('head.ejs') -%>
 <%- include('header.ejs', {s: s}) -%>
-<%- include('search.ejs') -%>
+<%- include('search.ejs', {key: 'tags', path: '/items'}) -%>
 <% i.forEach(item => { %>
 		<section class="itemResult">
 			<h2><a href="<%- item.id -%>"><%- item.name -%></a></h2>
@@ -13,6 +13,4 @@
 		</section>
 <% }) %>
 <%- include('pagination.ejs', {p: p}) %>
-<%- include('searchscr.ejs', {path: '/items'}) %>
-<%- include('paginationscr.ejs', {pages: p.pages}) %>
 <%- include('foot.ejs') -%>
