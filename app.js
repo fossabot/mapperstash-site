@@ -45,9 +45,7 @@ app.set('views', './views')
 app.get('/', async (req, res) => {
   const ItemService = require('./services/items.js')
 
-  if (req.session.user) console.log(req.session.user)
-
-  res.render('home.ejs', {itemcount: await ItemService.estimatedCount()})
+  res.render('home.ejs', {ic: await ItemService.estimatedCount(), s: req.session})
 })
 
 const httpsOpts = {

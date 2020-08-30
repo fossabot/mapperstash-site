@@ -3,7 +3,7 @@ const express = require('express')
 const bodyparser = require('body-parser')
 const router = express.Router()
 
-router.get('/register', async (req, res) => res.render('register.ejs'))
+router.get('/register', async (req, res) => res.render('register.ejs', {s: req.session}))
 
 router.post('/register', bodyparser.urlencoded({extended: false}), async (req, res) => {
   const UserService = require('../services/users.js')
@@ -13,7 +13,7 @@ router.post('/register', bodyparser.urlencoded({extended: false}), async (req, r
   res.redirect('/login')
 })
 
-router.get('/login', async (req, res) => res.render('login.ejs'))
+router.get('/login', async (req, res) => res.render('login.ejs', {s: req.session}))
 
 router.post('/login', bodyparser.urlencoded({extended: false}), async (req, res) => {
   const UserService = require('../services/users.js')
@@ -25,7 +25,7 @@ router.post('/login', bodyparser.urlencoded({extended: false}), async (req, res)
     return res.render('login.ejs')
   }
 
-  if (!verified) return res.render('login.ejs')
+  if (!verified) return res.render('login.ejs', {s: req.session})
 
   req.session.user = await UserService.getIdFromName(req.body.name)
   res.redirect('/')

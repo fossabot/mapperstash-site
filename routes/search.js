@@ -25,7 +25,7 @@ router.get('/items', async (req, res) => {
 
   const pageresults = await ItemService.itemQuery(pagination, includes, excludes)
 
-  res.render('items.ejs', {items: pageresults, pagination: pagination, resultcount: itemcount})
+  res.render('items.ejs', {i: pageresults, p: pagination, ic: itemcount, s: req.session})
 })
 
 router.get('/tags', async (req, res) => {
@@ -47,7 +47,7 @@ router.get('/tags', async (req, res) => {
     result.uses = await ItemService.tagUses(result.id)
   }))
 
-  res.render('tags.ejs', {items: pageresults, pagination: pagination, resultcount: itemcount})
+  res.render('tags.ejs', {i: pageresults, p: pagination, ic: itemcount, s: req.session})
 })
 
 router.get('/users', async (req, res) => {
@@ -68,7 +68,7 @@ router.get('/users', async (req, res) => {
     result.uses = await ItemService.tagUses(result.id)
   }))*/
 
-  res.render('users.ejs', {items: pageresults, pagination: pagination, resultcount: itemcount})
+  res.render('users.ejs', {i: pageresults, p: pagination, ic: itemcount, s: req.session})
 })
 
 module.exports = router

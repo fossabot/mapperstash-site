@@ -1,5 +1,5 @@
 <%- include('head.ejs') -%>
-<%- include('header.ejs') -%>
+<%- include('header.ejs', {s: s}) -%>
 		<main id="home">
 			<div id="search">
 				<input id="searchtxt" type="text" />
@@ -19,6 +19,6 @@ document.getElementById('searchbtn').onclick = _ => {
 }
 		</script>
 		<footer>
-			<p><%- itemcount -%> items indexed</p>
+			<p><%- ic -%> items indexed</p>
 		</footer>
 <%- include('foot.ejs') -%>

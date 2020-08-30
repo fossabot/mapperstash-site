@@ -7,8 +7,12 @@
 					<li><a href="/tags">Tags</a></li>
 					<li><a href="/users">Users</a></li>
 					<li><a href="/submit">Submit</a></li>
+					<% if (s.user) { %>
+					<li><a href="/logout">Logout</a></li>
+					<% } else {  %>
 					<li><a href="/register">Register</a></li>
 					<li><a href="/login">Login</a></li>
+					<% } %>
 				</ul>
 			</nav>
 		</header>
