@@ -26,10 +26,14 @@ UserSchema.path('password').validate(async checkedPassword => {
 UserSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next()
 
-  const salt = await bcrypt.genSalt(16)
+  const salt = await bcrypt.genSalt(12)
   this.password = await bcrypt.hash(this.password, salt)
 
   return next()
 })
+
+UserSchema.methods.comparePassword = async function(checkedPassword) {
+  return bcrypt.compare(checkedPassword, this.password)
+}
 
 module.exports = mongoose.model('User', UserSchema)

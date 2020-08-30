@@ -1,0 +1,10 @@
+<%- include('head.ejs') -%>
+<%- include('header.ejs') -%>
+		<main id="login">
+			<form action="/login" method="POST">
+				<label>Username:<input id="name" name="name" type="text" /></label>
+				<label>Password:<input id="password" name="password" type="password" /></label>
+				<input type="submit" id="register" value="Register" />
+			</form>
+		</main>
+<%- include('foot.ejs') -%>
