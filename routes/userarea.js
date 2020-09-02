@@ -14,17 +14,18 @@ router.post('/submit', filterSession, bodyparser.urlencoded({extended: false}), 
   const ItemService = require('../services/items.js')
   const TagService = require('../services/tags.js')
 
-  const tags = req.body.tags.split(' ')
-  console.log(tags)
-  const tagIds = await Promise.all(tags.map(async tag => {
-    try {
-      return TagService.getIdFromTag(tag)
-    } catch (e) {
-      if (!e.name == 'TypeError') throw new Error()
-      return (await TagService.create(tag)).id
-    }
-  }))
-  console.log(tagIds)
+  var tags, tagIds
+  if (req.body.tags) {
+    tags = req.body.tags.split(' ')
+    tagIds = await Promise.all(tags.map(async tag => {
+      try {
+        return TagService.getIdFromTag(tag)
+      } catch (e) {
+        if (!e.name == 'TypeError') throw new Error()
+        return (await TagService.create(tag)).id
+      }
+    }))
+  }
 
   await ItemService.create(req.body.name, req.body.url, tagIds)
 
