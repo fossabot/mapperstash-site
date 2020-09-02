@@ -1,0 +1,11 @@
+<%- include('head.ejs') -%>
+<%- include('header.ejs') -%>
+		<main id="submit">
+			<form action="/submit" method="POST">
+				<label>Name:<input name="name" type="text" /></label>
+				<label>Url:<input name="url" type="url" /></label>
+				<label>Tags:<input name="tags" type="text" /></label>
+				<input type="submit" value="Submit" />
+			</form>
+		</main>
+<%- include('foot.ejs') -%>
