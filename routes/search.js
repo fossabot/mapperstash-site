@@ -13,8 +13,8 @@ router.get('/items', async (req, res) => {
 
     ;({includes, excludes} = TagService.parseTags(queryParts))
 
-    if (includes) includes = await TagService.getIdFromTag(includes)
-    if (excludes) excludes = await TagService.getIdFromTag(excludes)
+    if (includes) includes = await TagService.getIdFromTags(includes)
+    if (excludes) excludes = await TagService.getIdFromTags(excludes)
   }
 
   const itemcount = await ItemService.countQuery(includes, excludes)

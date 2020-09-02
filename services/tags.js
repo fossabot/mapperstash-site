@@ -14,12 +14,13 @@ function parseTags(tags) {
   return {includes: includes, excludes: excludes}
 }
 
-async function getIdFromTag(tags) {
-  tags = await Promise.all(tags.map(async tag => {
-    return TagModel.findOne({ tag: tag }).exec()
-  }))
-  tags = tags.map(tag => {return tag.id})
-  return tags
+async function getIdFromTag(tag) {
+  const queriedTag = await TagModel.findOne({ tag: tag }).exec()
+  return queriedTag.id
+}
+
+async function getIdFromTags(tags) {
+  return Promise.all(tags.map(tag => tag = getIdFromTag(tag)))
 }
 
 async function tagTextSearch(pagination, text) {
@@ -36,7 +37,13 @@ async function tagTextCount(text) {
   return TagModel.countDocuments({tag: {$regex: text, $options: 'i'}}).exec()
 }
 
+async function create(tag, implies) {
+  return TagModel.create({tag: tag, implies: implies})
+}
+
 module.exports.parseTags = parseTags
 module.exports.getIdFromTag = getIdFromTag
+module.exports.getIdFromTags = getIdFromTags
 module.exports.tagTextSearch = tagTextSearch
 module.exports.tagTextCount = tagTextCount
+module.exports.create = create

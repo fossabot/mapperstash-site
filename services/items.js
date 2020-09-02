@@ -20,7 +20,7 @@ async function estimatedCount() {
 async function itemQuery(pagination, includes, excludes) {
   var query = ItemModel.find()
 
-  queryFilter(includes, excludes)
+  queryFilter(query, includes, excludes)
 
   if (pagination.page && pagination.size) query.skip((pagination.page - 1) * pagination.size)
 
@@ -33,10 +33,8 @@ async function tagUses(tag) {
   return ItemModel.countDocuments().where('tags').all(tag).exec()
 }
 
-async function create(body) {
-  /*const tags = body.tags.split(' ')*/
-
-  return ItemModel.create({name: body.name, url: body.url/*, tags: tags*/})
+async function create(name, url, tags) {
+  return ItemModel.create({name: name, url: url, tags: tags})
 }
 
 module.exports.queryFilter = queryFilter

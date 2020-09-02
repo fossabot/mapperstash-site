@@ -12,8 +12,21 @@ router.get('/submit', filterSession, async (req, res) => res.render('submit.ejs'
 
 router.post('/submit', filterSession, bodyparser.urlencoded({extended: false}), async (req, res) => {
   const ItemService = require('../services/items.js')
+  const TagService = require('../services/tags.js')
 
-  await ItemService.create(req.body)
+  const tags = req.body.tags.split(' ')
+  console.log(tags)
+  const tagIds = await Promise.all(tags.map(async tag => {
+    try {
+      return TagService.getIdFromTag(tag)
+    } catch (e) {
+      if (!e.name == 'TypeError') throw new Error()
+      return (await TagService.create(tag)).id
+    }
+  }))
+  console.log(tagIds)
+
+  await ItemService.create(req.body.name, req.body.url, tagIds)
 
   res.redirect('/submit')
 })
