@@ -9,7 +9,8 @@ function paginationCalc(itemcount, query) {
 }
 
 function validPage(page) {
-  return Boolean(!(Number.isInteger(Number(req.query.page))) || req.query.page < 1)
+  return Boolean(Number.isInteger(Number(page)) && page > 0)
 }
 
 module.exports.paginationCalc = paginationCalc
+module.exports.validPage = validPage
